@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Password Manager</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Firebase App (the core Firebase SDK) -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <!-- Firebase Auth -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+    <!-- Firebase Firestore -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h1>Password Manager</h1>
+        <div id="auth-section">
+            <form id="login-form">
+                <input type="email" id="login-email" placeholder="Email" required>
+                <input type="password" id="login-password" placeholder="Password" required>
+                <button type="submit">Login</button>
+            </form>
+            <form id="signup-form">
+                <input type="email" id="signup-email" placeholder="Email" required>
+                <input type="password" id="signup-password" placeholder="Password" required>
+                <button type="submit">Sign Up</button>
+            </form>
+        </div>
+        <div id="app-section" style="display:none;">
+            <button id="logout-btn" style="float:right; margin-bottom:10px;">Logout</button>
+            <form id="password-form">
+                <input type="text" id="title" placeholder="Name/Title" required>
+                <input type="text" id="userid" placeholder="User ID" required>
+                <input type="password" id="password" placeholder="Password" required>
+                <button type="submit">Add</button>
+            </form>
+            <div id="card-list"></div>
+        </div>
+    </div>
+    <script src="app.js"></script>
+    <div class="footer-capsule">Made with <span style="color:#ef4444;">&#10084;&#65039;</span> by Aman Kumar</div>
+</body>
+</html>
