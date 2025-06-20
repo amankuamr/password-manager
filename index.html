@@ -6,6 +6,151 @@
     <title>Password Manager</title>
     <link rel="stylesheet" href="style.css">
     <style>
+        html {
+            box-sizing: border-box;
+        }
+        *, *:before, *:after {
+            box-sizing: inherit;
+        }
+        body {
+            min-height: 100vh;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', 'Roboto', Arial, sans-serif;
+            background: linear-gradient(135deg, #6366f1 0%, #06b6d4 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.5s;
+            width: 100vw;
+            overflow-x: hidden;
+        }
+        .container {
+            margin-top: 40px;
+            background: rgba(255,255,255,0.97);
+            border-radius: 22px;
+            box-shadow: 0 8px 32px 0 rgba(99,102,241,0.18), 0 3px 12px 0 rgba(6,182,212,0.12);
+            padding: 32px 18px 28px 18px;
+            width: 100%;
+            max-width: 360px;
+            min-width: 0;
+            margin-left: auto;
+            margin-right: auto;
+            text-align: center;
+            animation: fadeInUp 0.8s cubic-bezier(.23,1.02,.67,1.01);
+            box-sizing: border-box;
+        }
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(40px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .logo {
+            width: 60px;
+            height: 60px;
+            margin-bottom: 12px;
+            display: inline-block;
+            background: linear-gradient(135deg, #6366f1 60%, #06b6d4 100%);
+            border-radius: 50%;
+            box-shadow: 0 2px 12px rgba(99,102,241,0.13);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .logo svg {
+            width: 36px;
+            height: 36px;
+            color: #fff;
+        }
+        h1 {
+            font-size: 2.1rem;
+            color: #6366f1;
+            margin-bottom: 18px;
+            letter-spacing: 1px;
+        }
+        #login-container, #signup-container {
+            margin-top: 10px;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+        input[type="email"], input[type="password"], input[type="text"] {
+            padding: 12px 14px;
+            border: 1.5px solid #a5b4fc;
+            border-radius: 10px;
+            font-size: 1.05rem;
+            outline: none;
+            background: #f3f4f6;
+            transition: border 0.2s, box-shadow 0.2s;
+        }
+        input[type="email"]:focus, input[type="password"]:focus, input[type="text"]:focus {
+            border: 2px solid #06b6d4;
+            box-shadow: 0 2px 8px rgba(6,182,212,0.10);
+            background: #fff;
+        }
+        button[type="submit"], #login-btn, #signup-btn {
+            background: linear-gradient(90deg, #6366f1 0%, #06b6d4 100%);
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            padding: 12px 0;
+            font-size: 1.08rem;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(99, 102, 241, 0.10);
+            transition: background 0.2s, box-shadow 0.2s, transform 0.15s;
+        }
+        button[type="submit"]:hover, #login-btn:hover, #signup-btn:hover {
+            background: linear-gradient(90deg, #4f46e5 0%, #0ea5e9 100%);
+            transform: translateY(-2px) scale(1.04);
+        }
+        .auth-switch-text {
+            margin-top: 10px;
+            font-size: 0.98rem;
+            color: #6366f1;
+        }
+        .auth-switch-text a {
+            color: #06b6d4;
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.2s;
+        }
+        .auth-switch-text a:hover {
+            color: #4f46e5;
+            text-decoration: underline;
+        }
+        .auth-error-message {
+            color: #ef4444;
+            font-size: 0.98rem;
+            margin-top: 6px;
+            min-height: 18px;
+        }
+        .loading-spinner {
+            border: 3px solid #e0e7ff;
+            border-top: 3px solid #6366f1;
+            border-radius: 50%;
+            width: 22px;
+            height: 22px;
+            animation: spin 1s linear infinite;
+            display: inline-block;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .footer-capsule {
+            margin-top: 32px;
+            background: rgba(255,255,255,0.85);
+            border-radius: 16px;
+            padding: 10px 24px;
+            font-size: 1.05rem;
+            color: #6366f1;
+            box-shadow: 0 2px 8px rgba(99,102,241,0.08);
+            display: inline-block;
+        }
+        /* Modal styles (unchanged) */
         .modal-overlay {
             position: fixed;
             top: 0;
@@ -65,7 +210,36 @@
             background: #dc2626;
             transform: translateY(-2px) scale(1.04);
         }
+        .password-card {
+            text-align: left;
+        }
+        .actions {
+            display: flex;
+            gap: 10px;
+            flex-wrap: nowrap;
+            justify-content: flex-start;
+        }
+        .copy-id, .copy-pass {
+            white-space: nowrap;
+        }
         @media (max-width: 480px) {
+            .container {
+                max-width: 98vw;
+                padding: 14px 2vw 12px 2vw;
+            }
+            h1 {
+                font-size: 1.1rem;
+            }
+            input[type="email"], input[type="password"], input[type="text"] {
+                font-size: 0.97rem;
+                padding: 10px 8px;
+            }
+            button[type="submit"], #login-btn, #signup-btn {
+                font-size: 0.97rem;
+                padding: 10px 0;
+            }
+        }
+            }
             .modal-box {
                 min-width: 90vw;
                 max-width: 98vw;
@@ -92,6 +266,13 @@
 </head>
 <body>
     <div class="container">
+        <div class="logo">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect x="3" y="11" width="18" height="10" rx="3" fill="currentColor"/>
+                <rect x="7" y="7" width="10" height="7" rx="2" fill="#a5b4fc"/>
+                <circle cx="12" cy="16" r="2" fill="#06b6d4"/>
+            </svg>
+        </div>
         <h1>Password Manager</h1>
         <div id="not-signed-in-message" class="not-signed-in-message" style="display:none;">Not signed in</div>
         <div id="auth-section">
